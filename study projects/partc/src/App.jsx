@@ -1,4 +1,4 @@
-const Hello = (props) => {
+const Hello = ({name, age}) => {
   
   /*
   const bornYear = () => {
@@ -6,11 +6,11 @@ const Hello = (props) => {
     return yearNow - props.age;
   }
   */
- const bornYear = () =>  new Date().getFullYear() - props.age;
- 
+ const bornYear = () =>  new Date().getFullYear() - age;
+
   return(
     <div>
-      <p>Hello {props.name}, you're {props.age} years old</p>
+      <p>Hello {name}, you're {age} years old</p>
       <p>So, you're born in {bornYear()}.</p>
     </div>
   );
