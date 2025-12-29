@@ -5,6 +5,17 @@ function App() {
   const [allClicks, setAllClicks] = useState([]);
   const [totalClicks, setTotalClicks] = useState(0);
 
+  // The total number of button presses is consistently one less than the actual amount of presses,
+  // for some reason.
+
+  // Even though a new value was set for left by calling setLeft(left + 1),
+  // the ***old value persists despite the update***.
+  // As a result, the attempt to count button presses produces a result that is too small
+
+  // The reason for this is that a state update in React happens asynchronously,
+  // i.e. not immediately but "at some point" after the current component function is finished,
+  // before the component is rendered again.
+  
   const handleLeftClicks = () => {
     setClicks({...clicks, left: clicks.left + 1});
     setAllClicks([...allClicks, 'L']);    
