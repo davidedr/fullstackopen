@@ -15,19 +15,23 @@ function App() {
   // The reason for this is that a state update in React happens asynchronously,
   // i.e. not immediately but "at some point" after the current component function is finished,
   // before the component is rendered again.
-  
+
   const handleLeftClicks = () => {
-    setClicks({...clicks, left: clicks.left + 1});
-    setAllClicks([...allClicks, 'L']);    
+    const updatedLeftClicks = clicks.left + 1;
+    setClicks({...clicks, left: updatedLeftClicks});
+    setTotalClicks(updatedLeftClicks + clicks.right);
+
+    setAllClicks([...allClicks, 'L']); 
     // Equivalent: setAllClicks(allClicks.concat('L')) concate returns a new copy 
     // Don't do: setAllClicks(allClicks.push('L')); push updates array
-    setTotalClicks(clicks.left + clicks.right);
-  }
+   }
 
   const handleRightClicks = () => {
-    setClicks({...clicks, right: clicks.right + 1});
+    const updatedRightClicks = clicks.right + 1;
+    setClicks({...clicks, right: updatedRightClicks});
+    setTotalClicks(clicks.left + updatedRightClicks);
+
     setAllClicks([...allClicks, 'R']);
-    setTotalClicks(clicks.left + clicks.right);
   }
 
   // It is forbidden in React to mutate state directly,
