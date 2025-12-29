@@ -13,5 +13,5 @@ refresh();
 
 setInterval(() => {
   counter++;
-  refresh()
+  refresh();
 }, 2000)
