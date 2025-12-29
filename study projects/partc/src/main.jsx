@@ -11,8 +11,7 @@ const refresh = () => {
 // initial painting
 refresh();
 
-counter+=1;
-refresh();
-
-counter+=1;
-refresh();
+setInterval(() => {
+  counter++;
+  refresh()
+}, 2000)
