@@ -15,11 +15,12 @@ const Hello = ({name, age}) => {
     </div>
   );
 }
-const App = () => {
+const App = ({counter}) => {
   const name = "Peter"
   const age = 18
   return (
       <div>
+        <p>Counter:{counter}</p>
         <h1>Greetings</h1>
         <Hello name="Maya" age={26+10} />
         <Hello name={name} age={age} />
