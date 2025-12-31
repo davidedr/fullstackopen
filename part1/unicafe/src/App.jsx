@@ -8,6 +8,7 @@ const Button = ({ label, onClick }) => {
 }
 
 const Statistics = ({ good, bad, neutral, all, average, positive }) => {
+  if (all > 0)
   return (
     <div>
       <h1>statistics</h1>
@@ -19,6 +20,12 @@ const Statistics = ({ good, bad, neutral, all, average, positive }) => {
       <div>positive {positive}%</div>
     </div>
   )
+  else
+    return (
+    <div>
+      <h1>statistics</h1>
+      <p>No feedback given</p>
+    </div>)
 }
 
 const App = () => {
