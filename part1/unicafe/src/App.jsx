@@ -9,9 +9,17 @@ const Button = ({ label, onClick }) => {
 
 const StatisticLine = ({ label, value }) => {
   if (label === "positive")
-    return(<div>{label} {value}%</div>);
+    return(
+      <tr>
+        <td>{label}</td><td>{Math.round(value*10)/10}%</td>
+      </tr>
+      );
   else
-    return(<div>{label} {value}</div>);
+    return(
+      <tr>
+        <td>{label}</td><td>{Math.round(value*10)/10}</td>
+      </tr>
+    );
 }
 
 const Statistics = ({ good, bad, neutral, all, average, positive }) => {
@@ -19,12 +27,16 @@ const Statistics = ({ good, bad, neutral, all, average, positive }) => {
   return (
     <div>
       <h1>statistics</h1>
-      <StatisticLine label="good" value={good} />
-      <StatisticLine label="neutral" value={neutral} />
-      <StatisticLine label="bad" value={bad} />
-      <StatisticLine label="all" value={all} />
-      <StatisticLine label="average" value={average} />
-      <StatisticLine label="positive" value={positive} />
+      <table>
+        <tbody>
+        <StatisticLine label="good" value={good} />
+        <StatisticLine label="neutral" value={neutral} />
+        <StatisticLine label="bad" value={bad} />
+        <StatisticLine label="all" value={all} />
+        <StatisticLine label="average" value={average} />
+        <StatisticLine label="positive" value={positive} />
+      </tbody>
+      </table>
     </div>
   )
   else
