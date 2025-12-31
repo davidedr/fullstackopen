@@ -1,4 +1,26 @@
+import { all } from 'axios';
 import { useState } from 'react'
+
+const History = ({ allClicks }) => {
+  console.log(allClicks.length, allClicks);
+  if (allClicks.length === 0) {
+    return (
+      <div>Press the buttons!</div>
+    )
+  }
+  else 
+    return(
+    <div>
+      Button presses history: {allClicks.join('')}
+    </div>
+    );
+}
+
+const Button = ({ label, handleClicks}) => {
+  return (
+    <button onClick={handleClicks}>{label} </button>
+  ) 
+}
 
 function App() {
   const [clicks, setClicks] = useState({ left: 0, right: 0});
@@ -43,11 +65,11 @@ function App() {
   return (
     <>
       <div>{clicks.left}, {clicks.right}</div>
-      <div>All: {allClicks.join()}</div>
+      <History allClicks={allClicks} />
       <div>Total clicks:{totalClicks}</div>
       <div>
-        <button onClick={handleLeftClicks}>Left</button>
-        <button onClick={handleRightClicks}>Right</button>
+        <Button label={"Left"} handleClicks={handleLeftClicks} />
+        <Button label={"Right"} handleClicks={handleRightClicks} />
       </div>
     </>
   )
