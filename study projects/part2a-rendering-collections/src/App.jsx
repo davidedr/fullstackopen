@@ -11,6 +11,13 @@ const App = () => {
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important === true);
 
+  const toggleImportance = id => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(note => note.id === id)
+    const changedNote = { ...note, important: !note.important}
+    axios.put(url, changedNote).then(res => {setNotes(notes.map(note => note.id === id? res.data: note))})
+  }
+
   const addNote = (event) => {
     event.preventDefault();
     console.log("save button pressed", event.target);
@@ -66,7 +73,7 @@ const App = () => {
         <button onClick={() => setShowAll(!showAll)}>Show {showAll ? "Important" : "All"}</button>
       </div>
       <ul>
-        {notesToShow.map(note => <Note key={note.id} note={note} />)}
+        {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={() => toggleImportance(note.id)}/>)}
       </ul>
       <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange} />
