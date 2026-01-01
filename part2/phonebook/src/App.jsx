@@ -25,7 +25,10 @@ const App = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const newPersonObj = { name: newName }
-    //setPersons([...persons, newPersonObj])
+    if (persons.filter(person => person.name === newName).length > 0) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
     setPersons(persons.concat(newPersonObj))
     setNewName("")
   }
