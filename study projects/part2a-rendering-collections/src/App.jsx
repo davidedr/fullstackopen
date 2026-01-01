@@ -15,9 +15,13 @@ const App = () => {
   const toggleImportance = id => {
     const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(note => note.id === id)
-    const changedNote = { ...note, important: !note.important}
+    const changedNote = { ...note, important: !note.important }
     NoteService.update(id, changedNote)
-    .then(modifiedNote => {setNotes(notes.map(note => note.id === id? modifiedNote: note))})
+      .then(modifiedNote => { setNotes(notes.map(note => note.id === id ? modifiedNote : note)) })
+      .catch(err => {
+        alert(`the note ${note.content} reports the error: ${err}!`)
+        setNotes(notes.filter(note => note.id !== id))
+      });
   }
 
   const addNote = (event) => {
@@ -75,7 +79,7 @@ const App = () => {
         <button onClick={() => setShowAll(!showAll)}>Show {showAll ? "Important" : "All"}</button>
       </div>
       <ul>
-        {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={() => toggleImportance(note.id)}/>)}
+        {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={() => toggleImportance(note.id)} />)}
       </ul>
       <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange} />
