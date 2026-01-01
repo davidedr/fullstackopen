@@ -17,7 +17,7 @@ const App = () => {
     const note = notes.find(note => note.id === id)
     const changedNote = { ...note, important: !note.important}
     NoteService.update(id, changedNote)
-    .then(res => {setNotes(notes.map(note => note.id === id? res.data: note))})
+    .then(modifiedNote => {setNotes(notes.map(note => note.id === id? modifiedNote: note))})
   }
 
   const addNote = (event) => {
@@ -27,8 +27,8 @@ const App = () => {
       content: newNote, important: Math.random() < 0.5, id: String(notes.length + 1)
     }
     NoteService.create(newNoteObj)
-      .then(res => {
-        setNotes(notes.concat(res.data))
+      .then(createdNote => {
+        setNotes(notes.concat(createdNote))
         setNewNote('');
       })
   }
@@ -56,7 +56,7 @@ const App = () => {
 
   useEffect(() => {
     NoteService.getAll()
-      .then(res => setNotes(res.data))
+      .then(readNotes => setNotes(readNotes))
   }, []
   )
 
