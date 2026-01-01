@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 import Note from './components/Note'
+import NoteService from './services/NoteService';
 
 // Note that the key attribute must now be defined for the Note components, and not for the li tags like before.
 const App = () => {
@@ -15,7 +16,8 @@ const App = () => {
     const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(note => note.id === id)
     const changedNote = { ...note, important: !note.important}
-    axios.put(url, changedNote).then(res => {setNotes(notes.map(note => note.id === id? res.data: note))})
+    NoteService.update(id, changedNote)
+    .then(res => {setNotes(notes.map(note => note.id === id? res.data: note))})
   }
 
   const addNote = (event) => {
@@ -24,7 +26,7 @@ const App = () => {
     const newNoteObj = {
       content: newNote, important: Math.random() < 0.5, id: String(notes.length + 1)
     }
-    axios.post('http://localhost:3001/notes', newNoteObj)
+    NoteService.create(newNoteObj)
       .then(res => {
         setNotes(notes.concat(res.data))
         setNewNote('');
@@ -53,7 +55,7 @@ const App = () => {
   // As a result, the notes fetched from the server are rendered to the screen.
 
   useEffect(() => {
-    axios.get('http://localhost:3001/notes')
+    NoteService.getAll()
       .then(res => setNotes(res.data))
   }, []
   )
