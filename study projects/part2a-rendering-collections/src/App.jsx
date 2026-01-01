@@ -17,8 +17,11 @@ const App = () => {
     const newNoteObj = {
       content: newNote, important: Math.random() < 0.5, id: String(notes.length + 1)
     }
-    setNotes(notes.concat(newNoteObj))
-    setNewNote('');
+    axios.post('http://localhost:3001/notes', newNoteObj)
+      .then(res => {
+        setNotes(notes.concat(res.data))
+        setNewNote('');
+      })
   }
 
   const handleNoteChange = (event) => {
@@ -45,7 +48,7 @@ const App = () => {
   useEffect(() => {
     axios.get('http://localhost:3001/notes')
       .then(res => setNotes(res.data))
-    }, []
+  }, []
   )
 
   // useEffect takes two parameters. The first is a function, the effect itself.
