@@ -1,20 +1,7 @@
 import { useState } from 'react'
-
-const Numbers = ({ persons }) => {
-  console.log("Numbers", persons.length, persons);
-
-  if (persons.length === 0)
-    return (<p>No numbers yet.</p>)
-  else
-    return (
-      <>
-        <h2>Numbers</h2>
-        <ul>
-          {persons.map(person => <li key={person.name}>{person.name} {person.number}</li>)}
-        </ul>
-      </>
-    )
-}
+import Numbers from './components/Numbers';
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -34,7 +21,7 @@ const App = () => {
     const newPersons = [...persons]
     if (newPerson != null)
       newPersons.push(newPerson)
-    
+
     if (newFilter === "")
       setFilteredPersons([...newPersons])
     else
@@ -46,7 +33,7 @@ const App = () => {
   const handleFilterChange = (event) => {
     const newFilter = event.target.value;
     setNewFilter(newFilter)
-    makeFiltering(newFilter)
+    makeFiltering(newFilter)  
   }
 
   const handleFormSubmit = (event) => {
@@ -74,16 +61,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <p>filter shown with<input value={newFilter} onChange={handleFilterChange}></input></p>
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
+      <PersonForm handleFormSubmit={handleFormSubmit}
+        newName={newName} handleNameChange={handleNameChange}
+        newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <Numbers persons={filteredPersons} />
     </div>
   )
