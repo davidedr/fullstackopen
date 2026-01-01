@@ -3,6 +3,7 @@ import Numbers from './components/Numbers';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import axios from 'axios';
+import PersonService from './services/PersonService';
 
 const App = () => {
   /*
@@ -47,11 +48,15 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
       return;
     }
-    const newPersonObj = { name: newName, number: newNumber, id: persons.length + 1 }
-    setPersons(persons.concat(newPersonObj))
-    setNewName("")
-    setNewNumber("")
-    makeFiltering(newFilter, newPersonObj)
+    const newPersonObj = { name: newName, number: newNumber }
+    PersonService.create(newPersonObj)
+      .then(createdPerson => {
+        setPersons(persons.concat(createdPerson))
+        setNewName("")
+        setNewNumber("")
+        makeFiltering(newFilter, createdPerson)
+      })
+      .catch(err => alert(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`))
   }
 
   const handleNameChange = (event) => {
@@ -65,15 +70,13 @@ const App = () => {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons")
-      .then(res => {
-        console.log("res.data", res.data);
-        
-        setPersons(res.data)
+    PersonService.getAll()
+      .then(persons => {
+        setPersons(persons)
         if (newFilter === "")
-          setFilteredPersons([...res.data])
+          setFilteredPersons([...persons])
         else
-          setFilteredPersons(res.data.filter(
+          setFilteredPersons(persons.filter(
             person => person.name.toLowerCase().includes(newFilter.toLowerCase())
           ))
       })
