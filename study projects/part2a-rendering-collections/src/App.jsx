@@ -13,7 +13,6 @@ const App = () => {
   const notesToShow = showAll ? notes : notes.filter(note => note.important === true);
 
   const toggleImportance = id => {
-    const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(note => note.id === id)
     const changedNote = { ...note, important: !note.important }
     NoteService.update(id, changedNote)
@@ -44,7 +43,7 @@ const App = () => {
   }
 
   // First, the body of the function defining the component is executed
-  // and the component is rendered for the first time (w/o nay data)
+  // and the component is rendered for the first time (w/o any data)
   // The following function, or effect in React parlance:
   // () => {...}
   // is executed immediately AFTER rendering.

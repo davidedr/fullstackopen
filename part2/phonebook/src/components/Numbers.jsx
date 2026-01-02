@@ -1,6 +1,6 @@
 import Person from "./Person";
 
-const Numbers = ({ persons }) => {
+const Numbers = ({ handleDelete, persons }) => {
     if (persons.length === 0)
         return (<p>No numbers yet.</p>)
     else
@@ -8,7 +8,8 @@ const Numbers = ({ persons }) => {
             <>
                 <h2>Numbers</h2>
                 <ul>
-                    {persons.map(person => <Person key={person.name} name={person.name} number={person.number} />)}
+                    {persons.map(person => <Person handleDelete={() => handleDelete(person.id)} id={person.id}
+                        name={person.name} number={person.number} />)}
                 </ul>
             </>
         )

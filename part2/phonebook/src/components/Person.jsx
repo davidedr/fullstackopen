@@ -1,5 +1,10 @@
-const Person = ({ name, number }) => {
-    return (<li key={name}>{name} {number}</li>);
+const Person = ({ handleDelete, id, name, number }) => {
+    return (
+        <div>
+            <li>{name} {number}</li>
+            <button onClick={() => handleDelete(id)}>Delete {id}</button>
+        </div>
+    );
 }
 
 export default Person;

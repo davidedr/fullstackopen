@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Numbers from './components/Numbers';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
-import axios from 'axios';
 import PersonService from './services/PersonService';
 
 const App = () => {
@@ -82,6 +81,28 @@ const App = () => {
       })
   }, [])
 
+  const handleDelete = id => {
+    console.log("handleDelete", id);
+    const aa = window.confirm(`Delete ${persons.filter(person => person.id === id)[0].name}?`)
+    if (!aa)
+      return;
+    PersonService.remove(id)
+      .then(() => {
+        const newPersons = persons.filter(person => person.id !== id)
+        setPersons(newPersons)
+        if (newFilter === "")
+          setFilteredPersons([...newPersons])
+        else
+          setFilteredPersons(newPersons.filter(
+            person => person.name.toLowerCase().includes(newFilter.toLowerCase())
+          ))
+      })
+      .catch(err => {
+        const wannaDeletedPerson = persons.filter(person => person.id === id)[0]
+        alert(`Deletion of Person ${wannaDeletedPerson.name}, ${wannaDeletedPerson.number} reports the error: ${err}!`)
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -89,9 +110,8 @@ const App = () => {
       <PersonForm handleFormSubmit={handleFormSubmit}
         newName={newName} handleNameChange={handleNameChange}
         newNumber={newNumber} handleNumberChange={handleNumberChange} />
-      <Numbers persons={filteredPersons} />
+      <Numbers handleDelete={handleDelete} persons={filteredPersons} />
     </div>
   )
 }
-
 export default App
