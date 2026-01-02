@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 import Note from './components/Note'
 import NoteService from './services/NoteService';
+import Notification from './components/Notification';
 
 // Note that the key attribute must now be defined for the Note components, and not for the li tags like before.
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("Add new note...");
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important === true);
 
@@ -18,7 +20,9 @@ const App = () => {
     NoteService.update(id, changedNote)
       .then(modifiedNote => { setNotes(notes.map(note => note.id === id ? modifiedNote : note)) })
       .catch(err => {
-        alert(`the note ${note.content} reports the error: ${err}!`)
+        setErrorMessage(`Note: '${note.content}' was alreary removed from server!`)
+        setTimeout(() => setErrorMessage(null), 5000)
+        //alert(`the note ${note.content} reports the error: ${err}!`)
         setNotes(notes.filter(note => note.id !== id))
       });
   }
@@ -74,6 +78,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage}/>
       <div>
         <button onClick={() => setShowAll(!showAll)}>Show {showAll ? "Important" : "All"}</button>
       </div>
