@@ -65,8 +65,9 @@ const App = () => {
         })
         //.catch(err => alert(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`))
         .catch(err => {
-          setErrorMessage(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`);
-          setTimeout(() => setErrorMessage(null), 1000)
+          //setErrorMessage(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`);
+          setErrorMessage(`Information of ${updatingPerson.name} has already been removed from the server`);
+          setTimeout(() => setErrorMessage(null), 5000)
         })
       return;
     }
@@ -81,7 +82,7 @@ const App = () => {
       //.catch(err => alert(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`))
       .catch(err => {
         setErrorMessage(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`);
-        setTimeout(() => setErrorMessage(null), 1000)
+        setTimeout(() => setErrorMessage(null), 5000)
       })
   }
 
@@ -133,7 +134,7 @@ const App = () => {
       .catch(err => {
         const wannaDeletedPerson = persons.filter(person => person.id === id)[0]
         setErrorMessage(`Deletion of Person ${wannaDeletedPerson.name}, ${wannaDeletedPerson.number} reports the error: ${err}!`);
-        setTimeout(() => setErrorMessage(null), 1000)
+        setTimeout(() => setErrorMessage(null), 5000)
       })
   }
 
