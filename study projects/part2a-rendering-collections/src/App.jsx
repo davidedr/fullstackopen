@@ -76,6 +76,16 @@ const App = () => {
   // The second parameter of useEffect is used to specify how often the effect is run.
   // If the second parameter is an empty array [], then the effect is only run
   // along with the first render of the component.
+
+  // The second parameter of useEffect is used to specify how often the effect is run.
+  // The principle is that the effect is always executed after the first render of the component
+  // and when the value of the second parameter changes.
+  // If the second parameter is an empty array [], its content never changes
+  // and the effect is only run after the first render of the component.
+  // This is exactly what we want when we are initializing the app state from the server.
+
+  // However, there are situations where we want to perform the effect at other times,
+  // e.g. when the state of the component changes in a particular way.
   return (
     <div>
       <h1>Notes</h1>
