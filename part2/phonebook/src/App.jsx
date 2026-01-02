@@ -3,6 +3,7 @@ import Numbers from './components/Numbers';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import PersonService from './services/PersonService';
+import Notification from './components/Notification';
 
 const App = () => {
   /*
@@ -20,6 +21,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('Add a number...')
   const [filteredPersons, setFilteredPersons] = useState([])
   const [newFilter, setNewFilter] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const makeFiltering = (newFilter, newPerson = null) => {
     console.log("makeFiltering", newFilter);
@@ -61,7 +63,11 @@ const App = () => {
               person => person.name.toLowerCase().includes(newFilter.toLowerCase())
             ))
         })
-        .catch(err => alert(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`))
+        //.catch(err => alert(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`))
+        .catch(err => {
+          setErrorMessage(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`);
+          setTimeout(() => setErrorMessage(null), 1000)
+        })
       return;
     }
     const newPersonObj = { name: newName, number: newNumber }
@@ -72,7 +78,11 @@ const App = () => {
         setNewNumber("")
         makeFiltering(newFilter, createdPerson)
       })
-      .catch(err => alert(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`))
+      //.catch(err => alert(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`))
+      .catch(err => {
+        setErrorMessage(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`);
+        setTimeout(() => setErrorMessage(null), 1000)
+      })
   }
 
   const handleNameChange = (event) => {
@@ -114,15 +124,23 @@ const App = () => {
             person => person.name.toLowerCase().includes(newFilter.toLowerCase())
           ))
       })
+      /*
       .catch(err => {
         const wannaDeletedPerson = persons.filter(person => person.id === id)[0]
         alert(`Deletion of Person ${wannaDeletedPerson.name}, ${wannaDeletedPerson.number} reports the error: ${err}!`)
+      })
+      */
+      .catch(err => {
+        const wannaDeletedPerson = persons.filter(person => person.id === id)[0]
+        setErrorMessage(`Deletion of Person ${wannaDeletedPerson.name}, ${wannaDeletedPerson.number} reports the error: ${err}!`);
+        setTimeout(() => setErrorMessage(null), 1000)
       })
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <PersonForm handleFormSubmit={handleFormSubmit}
         newName={newName} handleNameChange={handleNameChange}
