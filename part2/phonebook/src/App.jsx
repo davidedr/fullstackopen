@@ -43,8 +43,25 @@ const App = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (persons.filter(person => person.name === newName).length > 0) {
-      alert(`${newName} is already added to phonebook`);
+    const updatingPerson = persons.filter(person => person.name === newName)[0]
+    if (updatingPerson) {
+      // alert(`${newName} is already added to phonebook`);
+      const aa = window.confirm(`${updatingPerson.name} is already added to the phonebook, replace the old number with a new one?`)
+      if (!aa)
+        return;
+      PersonService.update(updatingPerson.id, { ...updatingPerson, number: newNumber })
+        .then(() => {
+          const updatedPersons = persons.map(person => person.id === updatingPerson.id ?
+            { ...updatingPerson, number: newNumber } : person)
+          setPersons(updatedPersons)
+          if (newFilter === "")
+            setFilteredPersons([...updatedPersons])
+          else
+            setFilteredPersons(updatedPersons.filter(
+              person => person.name.toLowerCase().includes(newFilter.toLowerCase())
+            ))
+        })
+        .catch(err => alert(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`))
       return;
     }
     const newPersonObj = { name: newName, number: newNumber }

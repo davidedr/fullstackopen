@@ -8,7 +8,7 @@ const Numbers = ({ handleDelete, persons }) => {
             <>
                 <h2>Numbers</h2>
                 <ul>
-                    {persons.map(person => <Person handleDelete={() => handleDelete(person.id)} id={person.id}
+                    {persons.map(person => <Person key={person.id} handleDelete={() => handleDelete(person.id)} id={person.id}
                         name={person.name} number={person.number} />)}
                 </ul>
             </>
