@@ -3,6 +3,7 @@ import axios from 'axios';
 import Note from './components/Note'
 import NoteService from './services/NoteService';
 import Notification from './components/Notification';
+import Footer from './components/Footer';
 
 // Note that the key attribute must now be defined for the Note components, and not for the li tags like before.
 const App = () => {
@@ -89,6 +90,7 @@ const App = () => {
         <input value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
       </form>
+      <Footer />
     </div>
   )
 }
