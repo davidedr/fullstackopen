@@ -1,4 +1,4 @@
-const ChosenCountries = ({ chosenCountries }) => {
+const ChosenCountries = ({ chosenCountries, handleShowButton }) => {
     if (!chosenCountries)
         return (<p>input some name...</p>)
     else if (chosenCountries.length === 0)
@@ -9,8 +9,10 @@ const ChosenCountries = ({ chosenCountries }) => {
         return null;
     else
         return (
-            <ul>
-                {chosenCountries.map(country => <li key={country}>{country}</li>)}
+            <ul>{chosenCountries.map(country => <div>
+                <li key={country}>{country}</li>
+                <button onClick={() => handleShowButton(country)}>Show</button>
+            </div>)}
             </ul>
         )
 }

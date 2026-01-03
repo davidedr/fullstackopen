@@ -9,6 +9,10 @@ const App = () => {
   const [chosenCountries, setChosenCountries] = useState(null);
   const [chosenCountryData, setChosenCountryData] = useState(null);
 
+  const handleShowButton = (country) => {
+    setChosenCountries([country])
+  }
+
   useEffect(() => {
     console.log("useEffect", chosenCountries);
 
@@ -49,10 +53,10 @@ const App = () => {
         <p>find countries <input value={query} onChange={handleQueryChange} /></p>
       </div>
       <div>
-        <ChosenCountries chosenCountries={chosenCountries} />
+        <ChosenCountries chosenCountries={chosenCountries} handleShowButton={handleShowButton} />
       </div>
       <div>
-        <SingleCountry chosenCountryData={chosenCountryData} />
+        <SingleCountry chosenCountryData={ chosenCountryData } />
       </div>
     </>
   )
