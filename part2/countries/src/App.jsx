@@ -1,33 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import CountriesService from './services/CountriesService'
+import ChosenCountries from './components/ChosenCountries'
+import SingleCountry from './components/SingleCountry'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [query, setQuery] = useState('')
+  const [allCountries, setAllCountries] = useState([])
+  const [chosenCountries, setChosenCountries] = useState(null);
+  const [chosenCountryData, setChosenCountryData] = useState(null);
+
+  useEffect(() => {
+    console.log("useEffect", chosenCountries);
+
+    if (!chosenCountries || chosenCountries.length === 0 || chosenCountries.length > 1) {
+      console.log("useEffect, chosenCountries null or longer than 1");
+      setChosenCountryData(null)
+      return
+    }
+
+    CountriesService.getCountry(chosenCountries[0])
+      .then(data => {
+        console.log(("useEffect, data"));
+        console.log((data));
+        setChosenCountryData(data)
+      })
+  }, [chosenCountries])
+
+  const handleQueryChange = (event) => {
+    console.log("handleQueryChange", event.target.value);
+    const query = event.target.value.toLowerCase()
+    setQuery(query);
+    const newChosenCountries = allCountries.filter(name => name.toLowerCase().includes(query));
+    console.log("handleQueryChange", newChosenCountries.length, "matches found");
+    setChosenCountries(newChosenCountries)
+  }
+
+  useEffect(() => {
+    CountriesService.getAll().then(data => {
+      const names = data.map(country => country.name.common);
+      setAllCountries(names)
+      console.log("read:", names.length, "names");
+    })
+  }, [])
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <p>find countries <input value={query} onChange={handleQueryChange} /></p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div>
+        <ChosenCountries chosenCountries={chosenCountries} />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div>
+        <SingleCountry chosenCountryData={chosenCountryData} />
+      </div>
     </>
   )
 }

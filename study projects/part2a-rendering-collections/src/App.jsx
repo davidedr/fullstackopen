@@ -44,7 +44,6 @@ const App = () => {
   const handleNoteChange = (event) => {
     console.log("handleNoteChange", event.target);
     setNewNote(event.target.value)
-
   }
 
   // First, the body of the function defining the component is executed
