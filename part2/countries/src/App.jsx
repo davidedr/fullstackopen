@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react'
 import CountriesService from './services/CountriesService'
 import ChosenCountries from './components/ChosenCountries'
 import SingleCountry from './components/SingleCountry'
+import WeatherService from './services/WeatherService'
+import Weaather from './components/Weaather'
 
 const App = () => {
   const [query, setQuery] = useState('')
   const [allCountries, setAllCountries] = useState([])
   const [chosenCountries, setChosenCountries] = useState(null);
   const [chosenCountryData, setChosenCountryData] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
 
   const handleShowButton = (country) => {
     setChosenCountries([country])
@@ -19,6 +22,7 @@ const App = () => {
     if (!chosenCountries || chosenCountries.length === 0 || chosenCountries.length > 1) {
       console.log("useEffect, chosenCountries null or longer than 1");
       setChosenCountryData(null)
+      setWeatherData(null)
       return
     }
 
@@ -29,6 +33,15 @@ const App = () => {
         setChosenCountryData(data)
       })
   }, [chosenCountries])
+
+  useEffect(() => {
+    if (!chosenCountryData)
+      return
+
+    WeatherService.getWeather(chosenCountryData.capitalInfo.latlng[0], chosenCountryData.capitalInfo.latlng[1])
+      .then(weatherData => setWeatherData(weatherData))
+
+  }, [chosenCountryData])
 
   const handleQueryChange = (event) => {
     console.log("handleQueryChange", event.target.value);
@@ -57,6 +70,7 @@ const App = () => {
       </div>
       <div>
         <SingleCountry chosenCountryData={ chosenCountryData } />
+        <Weaather weatherData={ weatherData } />
       </div>
     </>
   )
