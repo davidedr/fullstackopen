@@ -23,8 +23,20 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>')
 })
 
-app.get('api/notes', (req, res) => {
+app.get('/api/notes', (req, res) => {
     res.json(notes)
+})
+
+app.get('/api/notes/:id', (req, res) => {
+    const id = req.params.id
+    const note = notes.find(note => note.id === id)
+    if (note)
+        res.json(note)
+    else {
+        res.statusMessage = "resource not found!"
+        res.status(404).end()
+    }
+        
 })
 
 const PORT = 3001
