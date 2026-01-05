@@ -2,10 +2,10 @@ import axios from "axios"
 
 const weatherURL = "https://api.openweathermap.org/data/2.5/weather"
 
-const api_key = import.meta.env.VITE_WEATHER_API_KEY
+const openweathermap_key = import.meta.env.VITE_WEATHER_API_KEY
 
-const getWeather = (lat, lon, YOUR_API_KEY = null) => {
-    const request = axios.get(`${weatherURL}?lat=${lat}&lon=${lon}&units=metric&APPID=${api_key}`)
+const getWeather = (latitude, longitude, YOUR_API_KEY = null) => {
+    const request = axios.get(`${weatherURL}?lat=${latitude}&lon=${longitude}&units=metric&APPID=${openweathermap_key}`)
     return request.then(response => response.data)
 }
 
