@@ -65,6 +65,13 @@ app.post('/api/persons', (req, res) => {
     
     if (!req.body)
         return res.status(400).json({ error: "Not valid"})
+    if (!req.body.name || !req.body.number)
+        return res.status(400).json({ error: "Name or number Not valid"})
+
+    const same_name = persons.filter(person => person.name === req.body.name)
+    if (same_name || same_name.length > 0)
+        return res.status(400).json({ error: 'name must be unique' })
+
     const person = {
         id: String(Math.floor(Math.random()*MAX_ID)), name: req.body.name, number: req.body.number
     }

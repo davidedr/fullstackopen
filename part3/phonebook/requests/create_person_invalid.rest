@@ -1,0 +1,23 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+    {
+    "number": "new number"
+    }
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+    {
+    "name": "new name"
+    }
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+    {
+    "number": "new number",
+    "name": "Dan Abramov"
+    }
