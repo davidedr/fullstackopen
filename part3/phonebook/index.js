@@ -6,33 +6,11 @@ const MAX_ID=1E10
 app.use(express.json())
 
 const morgan = require('morgan')
-app.use(morgan('tiny'))
-
-let requestCounter = 0
-const requestLogger = (req, res, next) => {
-    requestCounter++
-    console.log(`--Begin of request n. ${requestCounter}-----------------`);
-    
-    console.log('Method :', req.method);
-    console.log('Path   :', req.path);
-    console.log('Headers:', req.headers);
-    if (req.body)
-        console.log('Body   :', req.body);
-    else
-        console.log("No body");
-    console.log(`--End of request n. ${requestCounter}-----------------`);
-    next()
-}
-
-app.use(requestLogger)
-
-/*
-const morgan = require('morgan')
 morgan.token('test', (req, res) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
 app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))
-*/
+
 
 let persons = [
     { 
