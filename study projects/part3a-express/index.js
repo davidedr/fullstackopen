@@ -7,6 +7,23 @@ const app = express()
 // and then attaches it to the body property of the request object before the route handler is called.
 app.use(express.json())  // Adds the json parser
 
+let requestCounter = 0
+const requestLogger = (req, res, next) => {
+    requestCounter++
+    console.log(`--Begin of request n. ${requestCounter}-----------------`);
+    
+    console.log('Method :', req.method);
+    console.log('Path   :', req.path);
+    console.log('Headers:', req.headers);
+    if (req.body)
+        console.log('Body   :', req.body);
+    else
+        console.log("No body");
+    console.log(`--End of request n. ${requestCounter}-----------------`);
+}
+
+app.use(requestLogger)
+
 let notes = [
   {
     id: "1",
@@ -26,22 +43,14 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
-    console.log("get, /");
-    console.log("headers", req.headers);
-
     res.send('<h1>Hello world</h1>')
 })
 
 app.get('/api/notes', (req, res) => {
-    console.log("get, /api/notes");
-    console.log("headers", req.headers);
-
     res.json(notes)
 })
 
 app.get('/api/notes/:id', (req, res) => {
-    console.log("get, /api/notes/:id");
-    console.log("headers", req.headers);
     console.log("params", req.params);
 
     const id = req.params.id
@@ -55,8 +64,6 @@ app.get('/api/notes/:id', (req, res) => {
 })
 
 app.delete('/api/notes/:id', (req, res) => {
-    console.log("delete, /api/notes/:id");
-    console.log("headers", req.headers);
     console.log("params", req.params);
 
     const id = req.params.id
@@ -65,10 +72,6 @@ app.delete('/api/notes/:id', (req, res) => {
 })
 
 app.post('/api/notes', (req, res) => {
-    console.log("post, /api/notes");
-    console.log(req.headers);
-    console.log(req.body);
-
     if (!req.body.content)
         return res.status(400).json({error: 'content missing'})
     
@@ -82,6 +85,12 @@ app.post('/api/notes', (req, res) => {
     
     res.json(note)
 })
+
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: 'Unknown endpoit'})
+}
+
+app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
