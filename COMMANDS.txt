@@ -15,3 +15,6 @@ add to package.json:
 npm run json-server
 
 https://studies.cs.helsinki.fi/restcountries/api/all
+
+git remote add origin https://github.com/davidedr/fullstackopen.git
+git push -u origin master 

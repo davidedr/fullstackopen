@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
 
+// The event handler function can access the data from the body property of the request object.
+// Without the json-parser, the body property would be undefined.
+// The json-parser takes the JSON data of a request, transforms it into a JavaScript object
+// and then attaches it to the body property of the request object before the route handler is called.
+app.use(express.json())  // Adds the json parser
+
 let notes = [
   {
     id: "1",
@@ -20,14 +26,24 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
+    console.log("get, /");
+    console.log("headers", req.headers);
+
     res.send('<h1>Hello world</h1>')
 })
 
 app.get('/api/notes', (req, res) => {
+    console.log("get, /api/notes");
+    console.log("headers", req.headers);
+
     res.json(notes)
 })
 
 app.get('/api/notes/:id', (req, res) => {
+    console.log("get, /api/notes/:id");
+    console.log("headers", req.headers);
+    console.log("params", req.params);
+
     const id = req.params.id
     const note = notes.find(note => note.id === id)
     if (note)
@@ -39,9 +55,32 @@ app.get('/api/notes/:id', (req, res) => {
 })
 
 app.delete('/api/notes/:id', (req, res) => {
+    console.log("delete, /api/notes/:id");
+    console.log("headers", req.headers);
+    console.log("params", req.params);
+
     const id = req.params.id
     notes = notes.filter(note => note.id !== id)
     res.status(204).end()
+})
+
+app.post('/api/notes', (req, res) => {
+    console.log("post, /api/notes");
+    console.log(req.headers);
+    console.log(req.body);
+
+    if (!req.body.content)
+        return res.status(400).json({error: 'content missing'})
+    
+    const maxId = notes.length > 0 ? Math.max(...notes.map(note => Number(note.id))) : 0
+    const nextId = maxId + 1
+    const note = {
+        content: req.body.content, important: req.body.important || false, id: String(nextId)
+    }
+    notes = notes.concat(note)
+    console.log(notes.map(note => note.id));
+    
+    res.json(note)
 })
 
 const PORT = 3001
