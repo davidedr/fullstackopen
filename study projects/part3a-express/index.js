@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+const cors = require('cors')
+app.use(cors())
+
 // The event handler function can access the data from the body property of the request object.
 // Without the json-parser, the body property would be undefined.
 // The json-parser takes the JSON data of a request, transforms it into a JavaScript object

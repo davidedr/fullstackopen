@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+const cors = require('cors')
+app.use(cors())
+
 const MAX_ID=1E10
 
 app.use(express.json())
