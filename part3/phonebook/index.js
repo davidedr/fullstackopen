@@ -1,4 +1,4 @@
-const pèrsons = [
+const persons = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -27,6 +27,10 @@ app.use(express.json())
 
 app.get('/api/persons', (req, res) => {
     res.json(pèrsons)
+})
+
+app.get('/info', (req, res) => {
+    res.send(`<h3>Phonebook has info for ${persons.length} people<br /><br />${new Date}</h3>`)
 })
 
 PORT = 3001
