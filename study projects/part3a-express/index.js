@@ -20,6 +20,7 @@ const requestLogger = (req, res, next) => {
     else
         console.log("No body");
     console.log(`--End of request n. ${requestCounter}-----------------`);
+    next()
 }
 
 app.use(requestLogger)
