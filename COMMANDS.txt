@@ -18,3 +18,10 @@ https://studies.cs.helsinki.fi/restcountries/api/all
 
 git remote add origin https://github.com/davidedr/fullstackopen.git
 git push -u origin master 
+
+npm install express
+npm update
+
+node --watch index.js
+"dev": "node --watch index.js",
+npm run dev

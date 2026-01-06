@@ -33,5 +33,16 @@ app.get('/info', (req, res) => {
     res.send(`<h3>Phonebook has info for ${persons.length} people<br /><br />${new Date}</h3>`)
 })
 
+app.get('/api/persons/:id', (req, res) => {
+    if (!req.params)
+        return res.status(404).json({ error: "Not valid"})
+    if (!req.params.id)
+        return res.status(404).json({ error: "Not valid"})
+    const person = persons.filter(person => person.id === req.params.id)
+    if (!person || person.length === 0)
+        return res.status(404).json({ error: "Not found"})
+    res.json(person[0])
+})
+
 PORT = 3001
 app.listen(PORT, () => console.log(`Server listens to port ${PORT}`))
