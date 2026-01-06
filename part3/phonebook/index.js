@@ -26,7 +26,7 @@ const app = express()
 app.use(express.json())
 
 app.get('/api/persons', (req, res) => {
-    res.json(pèrsons)
+    res.json(persons)
 })
 
 app.get('/info', (req, res) => {
