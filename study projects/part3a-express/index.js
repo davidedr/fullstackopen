@@ -10,6 +10,12 @@ app.use(cors())
 // and then attaches it to the body property of the request object before the route handler is called.
 app.use(express.json())  // Adds the json parser
 
+const morgan = require('morgan')
+morgan.token('test', (req, res) => {
+  return req.method === 'POST' ? JSON.stringify(req.body) : ''
+})
+app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))
+
 let requestCounter = 0
 const requestLogger = (req, res, next) => {
     requestCounter++
@@ -26,7 +32,7 @@ const requestLogger = (req, res, next) => {
     next()
 }
 
-app.use(requestLogger)
+//app.use(requestLogger)
 
 let notes = [
   {
