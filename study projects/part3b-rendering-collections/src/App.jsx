@@ -4,6 +4,7 @@ import Note from './components/Note'
 import NoteService from './services/NoteService';
 import Notification from './components/Notification';
 import Footer from './components/Footer';
+import NotesList from './components/NotesList';
 
 // Note that the key attribute must now be defined for the Note components, and not for the li tags like before.
 const App = () => {
@@ -21,7 +22,7 @@ const App = () => {
     NoteService.update(id, changedNote)
       .then(modifiedNote => { setNotes(notes.map(note => note.id === id ? modifiedNote : note)) })
       .catch(err => {
-        setErrorMessage(`Note: '${note.content}' was alreary removed from server!`)
+        setErrorMessage(`Note: '${note.content}' was already removed from server!`)
         setTimeout(() => setErrorMessage(null), 5000)
         //alert(`the note ${note.content} reports the error: ${err}!`)
         setNotes(notes.filter(note => note.id !== id))
@@ -92,9 +93,7 @@ const App = () => {
       <div>
         <button onClick={() => setShowAll(!showAll)}>Show {showAll ? "Important" : "All"}</button>
       </div>
-      <ul>
-        {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={() => toggleImportance(note.id)} />)}
-      </ul>
+      <NotesList notesToShow={notesToShow} toggleImportance={toggleImportance} />
       <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>

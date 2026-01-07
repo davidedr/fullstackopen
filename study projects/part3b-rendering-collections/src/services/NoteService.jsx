@@ -8,6 +8,8 @@ import axios from "axios";
 // Render server
 const baseURL = 'https://fullstackopen-pitl.onrender.com/api/notes'
 
+//const baseURL = '/api/notes'
+
 // Let's change the attribute baseUrl in the frontend notes app at src/services/notes.js like so:
 // nst baseUrl = 'http://localhost:3001/api/notes'
 // Now frontend's GET request to http://localhost:3001/api/notes does not work for some reason:
