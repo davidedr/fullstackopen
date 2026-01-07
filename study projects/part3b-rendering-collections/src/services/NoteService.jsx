@@ -1,6 +1,12 @@
 import axios from "axios";
+// json server
 //const baseURL = 'http://localhost:3001/notes'
-const baseURL = 'http://localhost:3001/api/notes'
+
+// "part3a-express" project's server
+//const baseURL = 'http://localhost:3001/api/notes'
+
+// Render server
+const baseURL = 'https://fullstackopen-pitl.onrender.com/api/notes'
 
 // Let's change the attribute baseUrl in the frontend notes app at src/services/notes.js like so:
 // nst baseUrl = 'http://localhost:3001/api/notes'

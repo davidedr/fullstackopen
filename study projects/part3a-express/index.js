@@ -14,7 +14,7 @@ const morgan = require('morgan')
 morgan.token('test', (req, res) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
-app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))
+app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))   
 
 let requestCounter = 0
 const requestLogger = (req, res, next) => {
