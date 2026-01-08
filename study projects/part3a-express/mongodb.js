@@ -28,6 +28,8 @@ const noteSchema = new mongoose.Schema({
  * Collection: notes (lowercase, plural nome; plural work automatically done by mongo)
  */
 const Note = mongoose.model('Note', noteSchema)
+
+// new note object based on the Note model constructor function
 const note = new Note({ content: 'HTML is easy', important: true, })
 const newNote = new Note({ content: 'Mongo is OK', important: true, })
 
