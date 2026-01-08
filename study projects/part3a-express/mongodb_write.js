@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+ mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
     console.log("Missing pwd param");
