@@ -8,13 +8,25 @@ if (process.argv.length < 3) {
 //const user = 'fullstackopen'
 const user = 'fullstackopen'
 const password = process.argv[2]
-const url = `mongodb+srv://${user}:${password}@cluster0.0ur2lvr.mongodb.net/?appName=Cluster0`
+/*
+ * Using this URL data is save into "test" (default?)db
+ */
+// const url = `mongodb+srv://${user}:${password}@cluster0.0ur2lvr.mongodb.net/?appName=Cluster0`
+
+/*
+ * Using this URL data is save into "NotesApp" db
+ */
+const url = `mongodb+srv://${user}:${password}@cluster0.0ur2lvr.mongodb.net/NotesApp?appName=Cluster0`
 mongoose.set('strictQuery', false)
 mongoose.connect(url, { family: 4 })
 const noteSchema = new mongoose.Schema({
     content: String,
     important: Boolean,
 })
+
+/* Model: Note (singular nome)
+ * Collection: notes (lowercase, plural nome; plural work automatically done by mongo)
+ */
 const Note = mongoose.model('Note', noteSchema)
 const note = new Note({ content: 'HTML is easy', important: true, })
 const newNote = new Note({ content: 'Mongo is OK', important: true, })
