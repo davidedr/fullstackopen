@@ -1,3 +1,30 @@
+// Setup mongo db stuff
+const mongoose = require('mongoose')
+if (process.argv.length < 3) {
+    console.log("Missing pwd param");
+    process.exit(-1)
+}
+const password = process.argv[2]
+const user = 'fullstackopen'
+const url = `mongodb+srv://${user}:${password}@cluster0.0ur2lvr.mongodb.net/NotesApp?appName=Cluster0`
+mongoose.set('strictQuery', false)
+mongoose.connect(url, { family: 4 })
+const noteSchema = new mongoose.Schema({
+    content: String,
+    important: Boolean,
+})
+// Removes id and _v from toJSON output
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject.id
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+const Note = mongoose.model('Note', noteSchema)
+
 const express = require('express')
 const app = express()
 
@@ -14,15 +41,15 @@ app.use(express.json())  // Adds the json parser
 
 const morgan = require('morgan')
 morgan.token('test', (req, res) => {
-  return req.method === 'POST' ? JSON.stringify(req.body) : ''
+    return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
-app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))   
+app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))
 
 let requestCounter = 0
 const requestLogger = (req, res, next) => {
     requestCounter++
     console.log(`--Begin of request n. ${requestCounter}-----------------`);
-    
+
     console.log('Method :', req.method);
     console.log('Path   :', req.path);
     console.log('Headers:', req.headers);
@@ -37,21 +64,21 @@ const requestLogger = (req, res, next) => {
 //app.use(requestLogger)
 
 let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
+    {
+        id: "1",
+        content: "HTML is easy",
+        important: true
+    },
+    {
+        id: "2",
+        content: "Browser can execute only JavaScript",
+        important: false
+    },
+    {
+        id: "3",
+        content: "GET and POST are the most important methods of HTTP protocol",
+        important: true
+    }
 ]
 
 app.get('/', (req, res) => {
@@ -59,7 +86,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/notes', (req, res) => {
-    res.json(notes)
+    //res.json(notes)
+    Note.find({}).then(notes => res.json(notes))
 })
 
 app.get('/api/notes/:id', (req, res) => {
@@ -85,8 +113,8 @@ app.delete('/api/notes/:id', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
     if (!req.body.content)
-        return res.status(400).json({error: 'content missing'})
-    
+        return res.status(400).json({ error: 'content missing' })
+
     const maxId = notes.length > 0 ? Math.max(...notes.map(note => Number(note.id))) : 0
     const nextId = maxId + 1
     const note = {
@@ -94,12 +122,12 @@ app.post('/api/notes', (req, res) => {
     }
     notes = notes.concat(note)
     console.log(notes.map(note => note.id));
-    
+
     res.json(note)
 })
 
 const unknownEndpoint = (req, res) => {
-    res.status(404).send({ error: 'Unknown endpoit'})
+    res.status(404).send({ error: 'Unknown endpoit' })
 }
 
 app.use(unknownEndpoint)

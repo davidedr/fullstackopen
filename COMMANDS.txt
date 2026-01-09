@@ -30,7 +30,6 @@ set "VITE_WEATHER_API_KEY=56a34737c9e1c2d7cde1bdb783f3c9e9" && npm run dev
 
 npm run build
 
-
 git remote add origin https://github.com/davidedr/fullstackopen-notes-deploy.git
 git push -u origin master 
 

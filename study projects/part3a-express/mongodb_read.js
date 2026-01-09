@@ -1,6 +1,6 @@
  mongoose = require('mongoose')
 
-if (process.argv.length < 3) {
+    if (process.argv.length < 3) {
     console.log("Missing pwd param");
     process.exit(-1)
 }

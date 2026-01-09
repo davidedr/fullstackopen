@@ -5,6 +5,8 @@ if (process.argv.length < 3) {
     process.exit(-1)
 }
 
+console.log(process.argv);
+
 //const user = 'fullstackopen'
 const user = 'fullstackopen'
 const password = process.argv[2]
