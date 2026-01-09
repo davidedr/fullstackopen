@@ -67,7 +67,6 @@ app.get('/', (req, res) => {
 app.get('/api/notes', (req, res) => {
     //res.json(notes)
     Note.find({}).then(notes => res.json(notes))
-
 })
 
 app.get('/api/notes/:id', (req, res) => {
