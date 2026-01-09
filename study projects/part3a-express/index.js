@@ -1,4 +1,7 @@
 require('dotenv').config()
+// It's important that dotenv gets imported BEFORE the note model is imported.
+// This ensures that the environment variables from the .env file are available globally
+// before the code from the other modules is imported
 const Note = require('./models/Note')
 
 const express = require('express')
