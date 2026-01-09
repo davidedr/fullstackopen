@@ -14,15 +14,15 @@ if (process.argv.length === 3) {
     console.log("phonebook:");
     mongoose.set('strictQuery', false)
     mongoose.connect(url, { family: 4 })
-    const phonebookEntrySchema = new mongoose.Schema({
+    const personSchema = new mongoose.Schema({
         name: String,
         number: String,
     })
-    const PhonebookEntryModel = mongoose.model('PhonebookEntry', phonebookEntrySchema)
-    PhonebookEntryModel.find({})
+    const PersonModel = mongoose.model('Person', personSchema)
+    PersonModel.find({})
         .then(res => {
             if (res.length > 0) {
-                res.forEach(phonebookEntry => console.log(phonebookEntry.name, phonebookEntry.number, phonebookEntry.id))
+                res.forEach(person => console.log(person.name, person.number, person.id))
                 mongoose.connection.close()
                 console.log("Connection closed.");
                 process.exit(0)
@@ -53,13 +53,13 @@ else {
 
     mongoose.set('strictQuery', false)
     mongoose.connect(url, { family: 4 })
-    const phonebookEntrySchema = new mongoose.Schema({
+    const personSchema = new mongoose.Schema({
         name: String,
         number: String,
     })
-    const PhonebookEntryModel = mongoose.model('PhonebookEntry', phonebookEntrySchema)
-    const newPhonebookEntry = new PhonebookEntryModel({ name, number })
-    newPhonebookEntry.save()
+    const PersonModel = mongoose.model('Person', personSchema)
+    const newPerson = new PersonModel({ name, number })
+    newPerson.save()
         .then(res => {
             console.log(`added ${res.name} ${res.number} ${res.id} to phonebook`);
             process.exit(0)
