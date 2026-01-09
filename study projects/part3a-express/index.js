@@ -72,18 +72,17 @@ app.get('/api/notes', (req, res) => {
 app.get('/api/notes/:id', (req, res) => {
     console.log("params", req.params);
 
-    /*
-    const id = req.params.id
-    const note = notes.find(note => note.id === id)
-    if (note)
-        res.json(note)
-    else {
-        res.statusMessage = "resource not found!"
-        res.status(404).end()
-    }
-    */
-   Note.findById(req.params.id)
-    .then(note => res.json(note))
+    Note.findById(req.params.id)
+        .then(note => {
+            if (note)
+                res.json(note)
+            else
+                res.status(404).end()
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send({ error: err })
+        })
 })
 
 app.delete('/api/notes/:id', (req, res) => {
