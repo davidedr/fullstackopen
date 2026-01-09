@@ -67,11 +67,13 @@ app.get('/', (req, res) => {
 app.get('/api/notes', (req, res) => {
     //res.json(notes)
     Note.find({}).then(notes => res.json(notes))
+
 })
 
 app.get('/api/notes/:id', (req, res) => {
     console.log("params", req.params);
 
+    /*
     const id = req.params.id
     const note = notes.find(note => note.id === id)
     if (note)
@@ -80,6 +82,9 @@ app.get('/api/notes/:id', (req, res) => {
         res.statusMessage = "resource not found!"
         res.status(404).end()
     }
+    */
+   Note.findById(req.params.id)
+    .then(note => res.json(note))
 })
 
 app.delete('/api/notes/:id', (req, res) => {
@@ -94,6 +99,7 @@ app.post('/api/notes', (req, res) => {
     if (!req.body.content)
         return res.status(400).json({ error: 'content missing' })
 
+    /*
     const maxId = notes.length > 0 ? Math.max(...notes.map(note => Number(note.id))) : 0
     const nextId = maxId + 1
     const note = {
@@ -103,6 +109,10 @@ app.post('/api/notes', (req, res) => {
     console.log(notes.map(note => note.id));
 
     res.json(note)
+    */
+    const newNote = new Note({ content: req.body.content, important: req.body.important || false })
+    newNote.save()
+        .then(savedNote => res.json(savedNote))
 })
 
 const unknownEndpoint = (req, res) => {

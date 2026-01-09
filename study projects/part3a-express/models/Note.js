@@ -8,6 +8,7 @@ mongoose.connect(url, { family: 4 })
     .catch(err => console.log("Error",err.message))
 
 const noteSchema = mongoose.Schema({ content: String, important: Boolean})
+
 // Removes id and _v from toJSON output
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
