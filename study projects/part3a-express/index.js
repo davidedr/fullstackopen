@@ -1,3 +1,8 @@
+/*
+ * in this file handlers are deinfed in the correct order
+ * https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-13-3-14
+ */
+
 require('dotenv').config()
 // It's important that dotenv gets imported BEFORE the note model is imported.
 // This ensures that the environment variables from the .env file are available globally
@@ -7,10 +12,8 @@ const Note = require('./models/Note')
 const express = require('express')
 const app = express()
 
-/*
 const cors = require('cors')
 app.use(cors())
-*/
 
 app.use(express.static('dist'))
 
@@ -78,17 +81,6 @@ app.post('/api/notes', (req, res) => {
     if (!req.body.content)
         return res.status(400).json({ error: 'content missing' })
 
-    /*
-    const maxId = notes.length > 0 ? Math.max(...notes.map(note => Number(note.id))) : 0
-    const nextId = maxId + 1
-    const note = {
-        content: req.body.content, important: req.body.important || false, id: String(nextId)
-    }
-    notes = notes.concat(note)
-    console.log(notes.map(note => note.id));
-
-    res.json(note)
-    */
     const newNote = new Note({ content: req.body.content, important: req.body.important || false })
     newNote.save()
         .then(savedNote => res.json(savedNote))
@@ -111,6 +103,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 // this has to be the last loaded middleware, also all the routes should be registered before this!
+// errorHandler must be the VERY LAST handler
 app.use(errorHandler)
 
 const PORT = process.env.PORT
