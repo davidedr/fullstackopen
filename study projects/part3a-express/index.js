@@ -7,8 +7,10 @@ const Note = require('./models/Note')
 const express = require('express')
 const app = express()
 
+/*
 const cors = require('cors')
 app.use(cors())
+*/
 
 app.use(express.static('dist'))
 
@@ -42,24 +44,6 @@ const requestLogger = (req, res, next) => {
 
 //app.use(requestLogger)
 
-let notes = [
-    {
-        id: "1",
-        content: "HTML is easy",
-        important: true
-    },
-    {
-        id: "2",
-        content: "Browser can execute only JavaScript",
-        important: false
-    },
-    {
-        id: "3",
-        content: "GET and POST are the most important methods of HTTP protocol",
-        important: true
-    }
-]
-
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>')
 })
@@ -69,7 +53,7 @@ app.get('/api/notes', (req, res) => {
     Note.find({}).then(notes => res.json(notes))
 })
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', (req, res, next) => {
     console.log("params", req.params);
 
     Note.findById(req.params.id)
@@ -79,10 +63,7 @@ app.get('/api/notes/:id', (req, res) => {
             else
                 res.status(404).end()
         })
-        .catch(err => {
-            console.log(err);
-            res.status(400).send({ error: err })
-        })
+        .catch(err => next(err))
 })
 
 app.delete('/api/notes/:id', (req, res) => {
@@ -118,6 +99,19 @@ const unknownEndpoint = (req, res) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
