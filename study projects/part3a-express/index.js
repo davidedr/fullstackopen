@@ -1,29 +1,4 @@
-// Setup mongo db stuff
-const mongoose = require('mongoose')
-if (process.argv.length < 3) {
-    console.log("Missing pwd param");
-    process.exit(-1)
-}
-const password = process.argv[2]
-const user = 'fullstackopen'
-const url = `mongodb+srv://${user}:${password}@cluster0.0ur2lvr.mongodb.net/NotesApp?appName=Cluster0`
-mongoose.set('strictQuery', false)
-mongoose.connect(url, { family: 4 })
-const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
-})
-// Removes id and _v from toJSON output
-noteSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject.id
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
-
-const Note = mongoose.model('Note', noteSchema)
+const Note = require('./models/Note')
 
 const express = require('express')
 const app = express()

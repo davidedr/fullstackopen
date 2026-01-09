@@ -37,3 +37,5 @@ da fare: 3.9-3.11
 https://fullstackopen.com/en/part3/deploying_app_to_internet#the-whole-app-to-the-internet
 
 npm install mongoose
+
+set "MONGODB_URI=mongodb+srv://${fullstackopen}:${fESQWERT78}@cluster0.0ur2lvr.mongodb.net/NotesApp?appName=Cluster0" && npm run dev
