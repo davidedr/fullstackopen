@@ -69,13 +69,29 @@ app.get('/api/notes/:id', (req, res, next) => {
         .catch(err => next(err))
 })
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res, next) => {
     console.log("params", req.params);
 
-    const id = req.params.id
-    notes = notes.filter(note => note.id !== id)
-    res.status(204).end()
+    if (!req.params || !req.params.id)
+        next({ error: 'Missing param' })
+
+    Note.findByIdAndDelete(res.params.id)
+        .then(result => res.status(204).send(result))
+        .catch(err => next(err))
 })
+
+app.put('/api/notes/:id', (req, res, next) => {
+    const { content, important } = request.body;
+    Note.findById(req.params.id)
+        .then(note => {
+            if (!note)
+                return res.status(404).end()
+            note.content = content
+            note.important = important
+            return note.save().then(updatedNote => res.json(updatedNote))
+        })
+        .catch(err => next(err))
+}) 
 
 app.post('/api/notes', (req, res) => {
     if (!req.body.content)
