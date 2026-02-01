@@ -34,12 +34,15 @@ app.delete('/api/persons/:id', (req, res) => {
         return res.status(400).json({ error: "Not valid"})
     if (!req.params.id)
         return res.status(400).json({ error: "Not valid"})
+    /*
     const person = persons.filter(person => person.id === req.params.id)
     if (!person || person.length === 0)
         return res.status(404).json({ error: "Not found"})
+    */
 
-    persons = persons.filter(person => person.id !== req.params.id)
-    res.status(202).end()
+    Person.findByIdAndDelete(req.params.id)
+        .then(result => res.status(204).send(result))
+        .catch(err => next(err))
 })
 
 app.post('/api/persons', (req, res) => {
