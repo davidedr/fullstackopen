@@ -29,7 +29,7 @@ app.get('/api/persons/:id', (req, res) => {
     Person.findById(req.params.id).then(person => res.json(person))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
     if (!req.params)
         return res.status(400).json({ error: "Not valid"})
     if (!req.params.id)
@@ -55,6 +55,14 @@ app.post('/api/persons', (req, res) => {
     newPerson.save()
         .then(person => res.json(person))
 })
+
+const errorHandler = (err, req, res, next) => {
+    console.error(err.message)
+    if (err.name === "CastError")
+        return res.status(400).send({ error: "Malformed id"})
+    next(err)
+}
+app.use(errorHandler)
 
 PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Persons server listens to port ${PORT}`))
