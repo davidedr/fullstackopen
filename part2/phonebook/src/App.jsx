@@ -45,7 +45,13 @@ const App = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const updatingPerson = persons.filter(person => person.name === newName)[0]
+   
+    const updatingPerson = persons.filter(person => {
+      if (person)
+        return person.name === newName
+      else
+        return false
+      })[0]
     if (updatingPerson) {
       // alert(`${newName} is already added to phonebook`);
       const aa = window.confirm(`${updatingPerson.name} is already added to the phonebook, replace the old number with a new one?`)
@@ -137,6 +143,8 @@ const App = () => {
         setTimeout(() => setErrorMessage(null), 5000)
       })
   }
+
+  console.log("Starting...");
 
   return (
     <div>
