@@ -10,7 +10,7 @@ app.use(cors())
 
 const morgan = require('morgan')
 morgan.token('test', (req, res) => {
-  return req.method === 'POST' ? JSON.stringify(req.body) : ''
+    return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
 app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))
 
@@ -22,18 +22,18 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
     if (!req.params)
-        return res.status(400).json({ error: "Not valid"})
+        return res.status(400).json({ error: "Not valid" })
     if (!req.params.id)
-        return res.status(400).json({ error: "Not valid"})
+        return res.status(400).json({ error: "Not valid" })
 
     Person.findById(req.params.id).then(person => res.json(person))
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
     if (!req.params)
-        return res.status(400).json({ error: "Not valid"})
+        return res.status(400).json({ error: "Not valid" })
     if (!req.params.id)
-        return res.status(400).json({ error: "Not valid"})
+        return res.status(400).json({ error: "Not valid" })
     /*
     const person = persons.filter(person => person.id === req.params.id)
     if (!person || person.length === 0)
@@ -45,23 +45,24 @@ app.delete('/api/persons/:id', (req, res, next) => {
         .catch(err => next(err))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     if (!req.body)
-        return res.status(400).json({ error: "Not valid"})
+        return res.status(400).json({ error: "Not valid" })
     if (!req.body.name || !req.body.number)
-        return res.status(400).json({ error: "Name or number Not valid"})
+        return res.status(400).json({ error: "Name or number Not valid" })
 
     const newPerson = new Person({ name: req.body.name, number: req.body.number })
     newPerson.save()
-        .then(person => res.json(person))
+        .then(createdPerson => res.json(createdPerson))
+        .catch(err => next(err))
 })
 
 app.put('/api/persons', (req, res, next) => {
     if (!req.body)
-        return res.status(400).json({ error: "req.body miss"})
+        return res.status(400).json({ error: "req.body miss" })
     if (!req.body.name || !req.body.number)
-        return res.status(400).json({ error: "Name or number Not valid"})
-    const {name, number} = req.body
+        return res.status(400).json({ error: "Name or number Not valid" })
+    const { name, number } = req.body
     Person.findOne({ name })
         .then(foundPerson => {
             if (foundPerson)
@@ -69,8 +70,8 @@ app.put('/api/persons', (req, res, next) => {
             else
                 foundPerson = new Person({ name, number })
             foundPerson.save()
-            .then(savedPerson => res.json(savedPerson))
-            .catch(err => next(err))
+                .then(savedPerson => res.json(savedPerson))
+                .catch(err => next(err))
         })
         .catch(err => next(err))
 })
@@ -78,7 +79,9 @@ app.put('/api/persons', (req, res, next) => {
 const errorHandler = (err, req, res, next) => {
     console.error(err.message)
     if (err.name === "CastError")
-        return res.status(400).send({ error: "Malformed id"})
+        return res.status(400).send({ error: "Malformed id" })
+    else if (err.name === "ValidationError")
+        return res.status(400).json({ error: err.message })
     next(err)
 }
 app.use(errorHandler)
