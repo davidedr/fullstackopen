@@ -1,0 +1,16 @@
+PUT http://localhost:5000/api/persons
+Content-Type: application/json
+
+    {
+    "name": "new name 1",
+    "number": "new number 1"
+    }
+
+###
+PUT http://localhost:5000/api/persons
+Content-Type: application/json
+
+    {
+    "name": "new name 3",
+    "number": "new number 2"
+    }

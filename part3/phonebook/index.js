@@ -56,6 +56,25 @@ app.post('/api/persons', (req, res) => {
         .then(person => res.json(person))
 })
 
+app.put('/api/persons', (req, res, next) => {
+    if (!req.body)
+        return res.status(400).json({ error: "req.body miss"})
+    if (!req.body.name || !req.body.number)
+        return res.status(400).json({ error: "Name or number Not valid"})
+    const {name, number} = req.body
+    Person.findOne({ name })
+        .then(foundPerson => {
+            if (foundPerson)
+                foundPerson.number = number
+            else
+                foundPerson = new Person({ name, number })
+            foundPerson.save()
+            .then(savedPerson => res.json(savedPerson))
+            .catch(err => next(err))
+        })
+        .catch(err => next(err))
+})
+
 const errorHandler = (err, req, res, next) => {
     console.error(err.message)
     if (err.name === "CastError")
