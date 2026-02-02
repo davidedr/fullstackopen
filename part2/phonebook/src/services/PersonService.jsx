@@ -6,7 +6,7 @@ const getAll = () => {
 }
 
 const create = newObject => {
-    return axios.post(baseURL, newObject).then(res => res.data).catch(err => console.log(err.response.data.error))
+    return axios.post(baseURL, newObject).then(res => res.data)
 }
 
 const update = (id, updatedObject) => {

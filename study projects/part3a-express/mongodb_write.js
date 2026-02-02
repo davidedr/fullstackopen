@@ -1,7 +1,7 @@
- mongoose = require('mongoose')
+mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
-    console.log("Missing pwd param");
+    console.log('Missing pwd param');
     process.exit(-1)
 }
 
@@ -53,9 +53,9 @@ console.log("Connection closed.");
 */
 
 // Connection closing has to be done after all save operations are completed
-Promise.all([note.save().then(res => console.log("note saved")), newNote.save().then(res => console.log("newNote saved"))]).then(res => {
-    console.log("All notes saved");
-    console.log("Connection closing...");
+Promise.all([note.save().then(res => console.log('note saved')), newNote.save().then(res => console.log('newNote saved'))]).then(res => {
+    console.log('All notes saved');
+    console.log('Connection closing...');
     mongoose.connection.close()
-    console.log("Connection closed.");
+    console.log('Connection closed.');
 })

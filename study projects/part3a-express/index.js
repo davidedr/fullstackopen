@@ -24,7 +24,7 @@ app.use(express.static('dist'))
 app.use(express.json())  // Adds the json parser
 
 const morgan = require('morgan')
-morgan.token('test', (req, res) => {
+morgan.token('test', (req) => {
     return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
 app.use(morgan(':method :status :res[content-length] - :response-time ms :test'))
@@ -32,16 +32,16 @@ app.use(morgan(':method :status :res[content-length] - :response-time ms :test')
 let requestCounter = 0
 const requestLogger = (req, res, next) => {
     requestCounter++
-    console.log(`--Begin of request n. ${requestCounter}-----------------`);
+    console.log(`--Begin of request n. ${requestCounter}-----------------`)
 
-    console.log('Method :', req.method);
-    console.log('Path   :', req.path);
-    console.log('Headers:', req.headers);
+    console.log('Method :', req.method)
+    console.log('Path   :', req.path)
+    console.log('Headers:', req.headers)
     if (req.body)
-        console.log('Body   :', req.body);
+        console.log('Body   :', req.body)
     else
-        console.log("No body");
-    console.log(`--End of request n. ${requestCounter}-----------------`);
+        console.log('No body')
+    console.log(`--End of request n. ${requestCounter}-----------------`)
     next()
 }
 
@@ -57,7 +57,7 @@ app.get('/api/notes', (req, res) => {
 })
 
 app.get('/api/notes/:id', (req, res, next) => {
-    console.log("params", req.params);
+    console.log('params', req.params)
 
     Note.findById(req.params.id)
         .then(note => {
@@ -70,7 +70,7 @@ app.get('/api/notes/:id', (req, res, next) => {
 })
 
 app.delete('/api/notes/:id', (req, res, next) => {
-    console.log("params", req.params);
+    console.log('params', req.params)
 
     if (!req.params || !req.params.id)
         next({ error: 'Missing param' })
@@ -81,7 +81,7 @@ app.delete('/api/notes/:id', (req, res, next) => {
 })
 
 app.put('/api/notes/:id', (req, res, next) => {
-    const { content, important } = request.body;
+    const { content, important } = req.body
     Note.findById(req.params.id)
         .then(note => {
             if (!note)
@@ -103,7 +103,7 @@ app.post('/api/notes', (req, res, next) => {
 })
 
 const unknownEndpoint = (req, res) => {
-    res.status(404).send({ error: 'Unknown endpoit' })
+    res.status(404).send({ error: 'Unknown endpoint' })
 }
 
 app.use(unknownEndpoint)

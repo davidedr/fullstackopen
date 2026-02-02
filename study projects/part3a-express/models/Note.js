@@ -4,15 +4,17 @@ const url = process.env.MONGODB_URI
 console.log('Connecting...', url);
 
 mongoose.connect(url, { family: 4 })
-    .then(res => console.log("Connected to mongodb"))
-    .catch(err => console.log("Error",err.message))
+  .then(() => console.log('Connected to mongodb'))
+  .catch(err => console.log('Error', err.message))
 
-const noteSchema = mongoose.Schema({ content: {
-  type: String, 
-  minLength: 5,
-  required: true
+const noteSchema = mongoose.Schema({
+  content: {
+    type: String,
+    minLength: 5,
+    required: true
   },
-  important: Boolean})
+  important: Boolean
+})
 
 // Removes id and _v from toJSON output
 /*
@@ -26,5 +28,5 @@ noteSchema.set('toJSON', {
 })
 */
 
-const Note = mongoose.model("Note", noteSchema)
+const Note = mongoose.model('Note', noteSchema)
 module.exports = Note

@@ -52,6 +52,7 @@ const App = () => {
       else
         return false
       })[0]
+
     if (updatingPerson) {
       // alert(`${newName} is already added to phonebook`);
       const aa = window.confirm(`${updatingPerson.name} is already added to the phonebook, replace the old number with a new one?`)
@@ -72,11 +73,16 @@ const App = () => {
         //.catch(err => alert(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`))
         .catch(err => {
           //setErrorMessage(`Update of Person ${updatingPerson.name}, ${newNumber} reports the error: ${err}!`);
-          setErrorMessage(`Information of ${updatingPerson.name} has already been removed from the server`);
-          setTimeout(() => setErrorMessage(null), 5000)
+          //setErrorMessage(`Information of ${updatingPerson.name} has already been removed from the server`);
+          console.log("POST");
+          console.log(err.message);
+          
+          setErrorMessage(err.message);
+          setTimeout(() => setErrorMessage(null), 10000)
         })
       return;
     }
+
     const newPersonObj = { name: newName, number: newNumber }
     PersonService.create(newPersonObj)
       .then(createdPerson => {
@@ -87,8 +93,11 @@ const App = () => {
       })
       //.catch(err => alert(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`))
       .catch(err => {
-        setErrorMessage(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err}!`);
-        setTimeout(() => setErrorMessage(null), 5000)
+        console.log("POST update");
+        console.log(err.response.data.error);
+        
+        setErrorMessage(`Creation of Person ${newPersonObj.name}, ${newPersonObj.number} reports the error: ${err.response.data.error}!`);
+        setTimeout(() => setErrorMessage(null), 10000)
       })
   }
 

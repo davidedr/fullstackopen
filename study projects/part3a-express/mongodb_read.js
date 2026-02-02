@@ -1,7 +1,6 @@
- mongoose = require('mongoose')
-
-    if (process.argv.length < 3) {
-    console.log("Missing pwd param");
+mongoose = require('mongoose')
+if (process.argv.length < 3) {
+    console.log('Missing pwd param')
     process.exit(-1)
 }
 
@@ -29,9 +28,9 @@ const noteSchema = new mongoose.Schema({
  */
 const Note = mongoose.model('Note', noteSchema)
 Note.find({}).then(res => {
-    console.log("Found", res.length, "notes:");
+    console.log('Found', res.length, 'notes:')
     res.forEach(note => console.log(note))
-    console.log("Connection closing...");
+    console.log('Connection closing...')
     mongoose.connection.close()
-    console.log("Connection closed.");
+    console.log('Connection closed.')
 })
