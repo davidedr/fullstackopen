@@ -7,7 +7,12 @@ mongoose.connect(url, { family: 4 })
     .then(res => console.log("Connected to mongodb"))
     .catch(err => console.log("Error",err.message))
 
-const noteSchema = mongoose.Schema({ content: String, important: Boolean})
+const noteSchema = mongoose.Schema({ content: {
+  type: String, 
+  minLength: 5,
+  required: true
+  },
+  important: Boolean})
 
 // Removes id and _v from toJSON output
 /*

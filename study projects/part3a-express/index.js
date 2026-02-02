@@ -91,15 +91,15 @@ app.put('/api/notes/:id', (req, res, next) => {
             return note.save().then(updatedNote => res.json(updatedNote))
         })
         .catch(err => next(err))
-}) 
+})
 
-app.post('/api/notes', (req, res) => {
-    if (!req.body.content)
-        return res.status(400).json({ error: 'content missing' })
+app.post('/api/notes', (req, res, next) => {
+    const body = req.body
 
-    const newNote = new Note({ content: req.body.content, important: req.body.important || false })
+    const newNote = new Note({ content: body.content, important: body.important || false })
     newNote.save()
         .then(savedNote => res.json(savedNote))
+        .catch(err => next(err))
 })
 
 const unknownEndpoint = (req, res) => {
@@ -109,13 +109,15 @@ const unknownEndpoint = (req, res) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+    console.error(error.message)
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-
-  next(error)
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+    else if (error.name === 'ValidatioError') {
+        return response.status(400).send({ error: error.message })
+    }
+    next(error)
 }
 
 // this has to be the last loaded middleware, also all the routes should be registered before this!
