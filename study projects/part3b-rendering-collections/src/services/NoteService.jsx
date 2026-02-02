@@ -3,7 +3,7 @@ import axios from "axios";
 //const baseURL = 'http://localhost:3001/notes'
 
 // "part3a-express" project's server
-//const baseURL = 'http://localhost:3001/api/notes'
+//const baseURL = 'http://localhost:5000/api/notes'
 
 // Render server
 const baseURL = 'https://fullstackopen-pitl.onrender.com/api/notes'
